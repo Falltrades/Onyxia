@@ -67,8 +67,12 @@ if [[ "$TP_PROXY" == "${PROXIES[1]}" ]]; then
     for key in "${!CLUSTERS_BASTION[@]}"; do
         echo "$key) ${CLUSTERS_BASTION[$key]}"
     done
-    read -p "Enter choice [1-4]: " cluster_choice
-    CLUSTER_INFO=(${CLUSTERS_BASTION[$cluster_choice]})
+    echo "*) Saisie libre du nom du cluster cible"
+    read -p "Enter choice : " cluster_choice
+    case "$cluster_choice" in
+        [0-9]*) CLUSTER_INFO=(${CLUSTERS_BASTION[$cluster_choice]}) ;;
+        *) CLUSTER_INFO=("$cluster_choice" "$(shuf -i 6000-7000 -n 1)") ;;
+    esac
 elif [[ "$TP_PROXY" == "${PROXIES[2]}" ]]; then
     echo "Select a TP_CLUSTER for ${PROXIES[2]}:"
     export SSL_CERT_FILE=/usr/local/share/ca-certificates/tp_cpin.pem
